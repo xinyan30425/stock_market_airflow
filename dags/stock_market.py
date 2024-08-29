@@ -66,7 +66,7 @@ def stock_market():
 
 
     # Define the task dependencies
-    is_api_available() >> get_stock_prices >> store_prices
+    is_api_available() >> get_stock_prices >> store_prices>>format_prices
    
 
 stock_market()
