@@ -1,6 +1,6 @@
 import sys
 
-from include.stock_market.tasks import _get_stock_prices,_store_prices
+from include.stock_market.tasks import _get_stock_prices,_store_prices,_get_formatted_csv
 
 from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
@@ -62,11 +62,17 @@ def stock_market():
             'SPARK_APPLICATION_ARGS':'{{task_instance.xcom_pull(task_ids="store_prices")}}'
         }
     )
+    
+    get_formatted_csv = PythonOperator(
+        task_id='get_formatted_csv',
+        python_callable=_get_formatted_csv,
+        op_kwargs={'path':'{{ task_instance.xcom_pull(task_ids="store_prices") }}'},
+    )
 
 
 
     # Define the task dependencies
-    is_api_available() >> get_stock_prices >> store_prices>>format_prices
+    is_api_available() >> get_stock_prices >> store_prices >>format_prices >> get_formatted_csv
    
 
 stock_market()
