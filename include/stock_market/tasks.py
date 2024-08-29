@@ -47,6 +47,7 @@ def _store_prices(stock):
     return f'{objw.bucket_name}/{symbol}'
 
 def _get_formatted_csv(path):
+    path = 'stock-market/APLL'
     client = _get_minio_client()
     prefix_name = f"{path.split('/')}/formatted_prices/"
     objects = client.list_objects(BUCKET_NAME,prefix=prefix_name,recursive=True)
