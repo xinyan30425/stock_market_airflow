@@ -1,0 +1,112 @@
+[2024-08-29T21:49:04.854+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2024-08-29T21:49:04.865+0000] {taskinstance.py:2603} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: stock_market.format_prices scheduled__2024-08-28T00:00:00+00:00 [queued]>
+[2024-08-29T21:49:04.870+0000] {taskinstance.py:2603} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: stock_market.format_prices scheduled__2024-08-28T00:00:00+00:00 [queued]>
+[2024-08-29T21:49:04.870+0000] {taskinstance.py:2856} INFO - Starting attempt 1 of 1
+[2024-08-29T21:49:04.877+0000] {taskinstance.py:2879} INFO - Executing <Task(DockerOperator): format_prices> on 2024-08-28 00:00:00+00:00
+[2024-08-29T21:49:04.886+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=858) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2024-08-29T21:49:04.889+0000] {standard_task_runner.py:72} INFO - Started process 860 to run task
+[2024-08-29T21:49:04.890+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'stock_market', 'format_prices', 'scheduled__2024-08-28T00:00:00+00:00', '--job-id', '35', '--raw', '--subdir', 'DAGS_FOLDER/stock_market.py', '--cfg-path', '/tmp/tmpz5xk3hme']
+[2024-08-29T21:49:04.892+0000] {standard_task_runner.py:105} INFO - Job 35: Subtask format_prices
+[2024-08-29T21:49:04.918+0000] {task_command.py:467} INFO - Running <TaskInstance: stock_market.format_prices scheduled__2024-08-28T00:00:00+00:00 [running]> on host ea1894f07d47
+[2024-08-29T21:49:04.956+0000] {taskinstance.py:3122} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='stock_market' AIRFLOW_CTX_TASK_ID='format_prices' AIRFLOW_CTX_EXECUTION_DATE='2024-08-28T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-08-28T00:00:00+00:00'
+[2024-08-29T21:49:04.956+0000] {logging_mixin.py:190} INFO - Task instance is in running state
+[2024-08-29T21:49:04.957+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: queued
+[2024-08-29T21:49:04.957+0000] {logging_mixin.py:190} INFO - Current task name:format_prices state:running start_date:2024-08-29 21:49:04.865576+00:00
+[2024-08-29T21:49:04.957+0000] {logging_mixin.py:190} INFO - Dag name:stock_market and current dag run status:running
+[2024-08-29T21:49:04.957+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2024-08-29T21:49:05.002+0000] {docker.py:157} ERROR - Failed to establish connection to Docker host tcp://docker-proxy:2375: Error while fetching server API version: HTTPConnectionPool(host='docker-proxy', port=2375): Max retries exceeded with url: /version (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0xffff86660d40>: Failed to resolve 'docker-proxy' ([Errno -2] Name or service not known)"))
+[2024-08-29T21:49:05.007+0000] {taskinstance.py:3301} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/docker/operators/docker.py", line 495, in execute
+    if self.force_pull or not self.cli.images(name=self.image):
+                              ^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/docker/operators/docker.py", line 363, in cli
+    return self.hook.api_client
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/functools.py", line 993, in __get__
+    val = self.func(instance)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/docker/hooks/docker.py", line 161, in api_client
+    raise AirflowException("Failed to establish connection to any given Docker hosts.")
+airflow.exceptions.AirflowException: Failed to establish connection to any given Docker hosts.
+[2024-08-29T21:49:05.011+0000] {logging_mixin.py:190} INFO - Task instance in failure state
+[2024-08-29T21:49:05.012+0000] {logging_mixin.py:190} INFO - Task start:2024-08-29 21:49:04.865576+00:00 end:2024-08-29 21:49:05.011601+00:00 duration:0.146025
+[2024-08-29T21:49:05.012+0000] {logging_mixin.py:190} INFO - Task:<Task(DockerOperator): format_prices> dag:<DAG: stock_market> dagrun:<DagRun stock_market @ 2024-08-28 00:00:00+00:00: scheduled__2024-08-28T00:00:00+00:00, state:running, queued_at: 2024-08-29 21:48:40.469632+00:00. externally triggered: False>
+[2024-08-29T21:49:05.012+0000] {logging_mixin.py:190} INFO - Failure caused by Failed to establish connection to any given Docker hosts.
+[2024-08-29T21:49:05.012+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=stock_market, task_id=format_prices, run_id=scheduled__2024-08-28T00:00:00+00:00, execution_date=20240828T000000, start_date=20240829T214904, end_date=20240829T214905
+[2024-08-29T21:49:05.019+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2024-08-29T21:49:05.019+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 35 for task format_prices (Failed to establish connection to any given Docker hosts.; 860)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 115, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 2995, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3149, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3173, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/docker/operators/docker.py", line 495, in execute
+    if self.force_pull or not self.cli.images(name=self.image):
+                              ^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/docker/operators/docker.py", line 363, in cli
+    return self.hook.api_client
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/functools.py", line 993, in __get__
+    val = self.func(instance)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/docker/hooks/docker.py", line 161, in api_client
+    raise AirflowException("Failed to establish connection to any given Docker hosts.")
+airflow.exceptions.AirflowException: Failed to establish connection to any given Docker hosts.
+[2024-08-29T21:49:05.033+0000] {local_task_job_runner.py:261} INFO - Task exited with return code 1
+[2024-08-29T21:49:05.051+0000] {taskinstance.py:3891} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-08-29T21:49:05.052+0000] {local_task_job_runner.py:240} INFO - ::endgroup::

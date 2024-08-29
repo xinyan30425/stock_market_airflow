@@ -1,7 +1,15 @@
+# stock_market.py
 import sys
+import os
+# Add the parent directory to the sys.path
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+sys.path.append('/opt/airflow')
+sys.path.append('/opt/airflow/include')
 
-from include.stock_market.tasks import _get_stock_prices,_store_prices,_get_formatted_csv,BUCKET_NAME
+print("Current sys.path:", sys.path)
 
+from dags.include.stock_market.tasks import _get_stock_prices,_store_prices,_get_formatted_csv,BUCKET_NAME
+print("Successfully imported functions:", _get_stock_prices, _store_prices, _get_formatted_csv, BUCKET_NAME)
 from airflow.decorators import dag, task
 from airflow.hooks.base import BaseHook
 from airflow.sensors.base import PokeReturnValue
@@ -15,8 +23,6 @@ import requests
 import json
 
 
-import os
-
 SYMBOL = "AAPL"
 
 @dag(
@@ -25,6 +31,7 @@ SYMBOL = "AAPL"
     catchup=False,
     tags=['stock_market']
 )
+
 def stock_market():
     
     @task.sensor(poke_interval=30,timeout=300, mode='poke')
@@ -46,24 +53,25 @@ def stock_market():
     
     store_prices = PythonOperator(
         task_id = 'store_prices',
-        python_callable = store_prices,
+        python_callable = _store_prices,
         op_kwargs={'stock':'{{ task_instance.xcom_pull(task_ids="get_stock_prices") }}'},
     )
     
-    format_prices = DockerOperator (
-        task_id = 'format_prices',
-        image = 'airflow/stock-app',
-        container_name = 'format_prices',
-        api_version = 'auto',
-        auto_remove = True,
-        docker_url = 'tcp://docker-proxy:2375',
-        network_mode = 'container:spark-master',
-        tty=True,
-        xcom_all = False,
-        mount_tmp_dir=False,
-        environment = {
-            'SPARK_APPLICATION_ARGS':'{{task_instance.xcom_pull(task_ids="store_prices")}}'
-        }
+    format_prices = DockerOperator(
+    task_id='format_prices',
+    image='airflow/stock-app',
+    container_name='format_prices',
+    api_version='auto',
+    auto_remove='success',  # Update to avoid deprecation warning
+    docker_url='tcp://docker-proxy:2375',
+    network_mode='container:spark-master',
+    tty=True,
+    xcom_all=False,
+    mount_tmp_dir=False,
+    environment={
+        'SPARK_APPLICATION_ARGS': '{{task_instance.xcom_pull(task_ids="store_prices")}}'
+    }
+    
     )
     
     get_formatted_csv = PythonOperator(

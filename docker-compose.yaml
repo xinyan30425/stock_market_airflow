@@ -120,6 +120,10 @@ services:
   airflow-webserver:
     <<: *airflow-common
     command: webserver
+    build:
+      context: .  # Path to directory containing the Dockerfile
+      dockerfile: Dockerfile  
+
     ports:
       - "8080:8080"
     healthcheck:
@@ -133,6 +137,12 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./include:/opt/airflow/include  # Add this line
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    
 
   airflow-scheduler:
     <<: *airflow-common
