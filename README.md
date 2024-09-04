@@ -22,7 +22,7 @@ Below is a UML activity diagram representing the stock market data pipeline work
 
 ```mermaid
 graph TD;
-    A[Start] --> B[Check API Availability]
+    A[Start] --> B{Check API Availability}
     B -->|API Available| C[Fetch Stock Prices]
     C --> D[Store Prices in MinIO]
     D --> E[Format Prices using Docker]
@@ -32,13 +32,17 @@ graph TD;
     B -->|API Not Available| I[Wait and Retry]
     I --> B
 
-## Requirements
-**Apache Airflow 2.10.0 or later
-**Docker and Docker Compose
-**MinIO server for object storage
-**PostgreSQL database
-**Python packages: requests, minio, astro-sdk-python
 
+## Requirements
+
+- **Apache Airflow**: Version 2.10.0 or later
+- **Docker**: Docker Engine and Docker Compose
+- **MinIO**: Server for object storage
+- **PostgreSQL**: Database for storing processed data
+- **Python Packages**:
+  - `requests`
+  - `minio`
+  - `astro-sdk-python`
 
 Astro project contains the following files and folders:
 
