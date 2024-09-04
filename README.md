@@ -16,6 +16,17 @@ This project implements a stock market data pipeline using Apache Airflow to aut
 5. **Get Formatted CSV**: Fetches the processed CSV file from MinIO.
 6. **Load Data to Data Warehouse**: Loads the final CSV data into a PostgreSQL database.
 
+## Requirements
+
+- **Apache Airflow**: Version 2.10.0 or later
+- **Docker**: Docker Engine and Docker Compose
+- **MinIO**: Server for object storage
+- **PostgreSQL**: Database for storing processed data
+- **Python Packages**:
+  - `requests`
+  - `minio`
+  - `astro-sdk-python`
+
 ## UML Diagram
 
 Below is a UML activity diagram representing the stock market data pipeline workflow:
@@ -32,17 +43,6 @@ graph TD;
     B -->|API Not Available| I[Wait and Retry]
     I --> B
 
-
-## Requirements
-
-- **Apache Airflow**: Version 2.10.0 or later
-- **Docker**: Docker Engine and Docker Compose
-- **MinIO**: Server for object storage
-- **PostgreSQL**: Database for storing processed data
-- **Python Packages**:
-  - `requests`
-  - `minio`
-  - `astro-sdk-python`
 
 Astro project contains the following files and folders:
 
