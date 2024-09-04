@@ -1,12 +1,46 @@
-Overview
-========
+# Stock Market Data Pipeline with Apache Airflow
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+This project implements a stock market data pipeline using Apache Airflow to automate data extraction, processing, and storage. The pipeline fetches stock prices from a remote API, stores them in MinIO (an S3-compatible object storage), processes the data using Docker containers, and loads the final output to a PostgreSQL database.
 
-Project Contents
-================
+## Project Structure
 
-Your Astro project contains the following files and folders:
+- **`dags/stock_market.py`**: Defines the DAG (Directed Acyclic Graph) for orchestrating tasks such as fetching stock prices, storing them, formatting, and loading to the data warehouse.
+- **`include/stock_market/tasks.py`**: Contains Python functions (tasks) for interacting with external services, such as APIs, MinIO, and databases.
+
+## Workflow Overview
+
+1. **Check API Availability**: Uses a sensor to check if the stock market API is available.
+2. **Fetch Stock Prices**: Retrieves stock price data for a specified symbol from the stock market API.
+3. **Store Prices in MinIO**: Saves the retrieved data as a JSON file in MinIO.
+4. **Format Prices**: Processes the stored data using a Docker container.
+5. **Get Formatted CSV**: Fetches the processed CSV file from MinIO.
+6. **Load Data to Data Warehouse**: Loads the final CSV data into a PostgreSQL database.
+
+## UML Diagram
+
+Below is a UML activity diagram representing the stock market data pipeline workflow:
+
+```mermaid
+graph TD;
+    A[Start] --> B[Check API Availability]
+    B -->|API Available| C[Fetch Stock Prices]
+    C --> D[Store Prices in MinIO]
+    D --> E[Format Prices using Docker]
+    E --> F[Get Formatted CSV from MinIO]
+    F --> G[Load Data to PostgreSQL]
+    G --> H[End]
+    B -->|API Not Available| I[Wait and Retry]
+    I --> B
+
+## Requirements
+**Apache Airflow 2.10.0 or later
+**Docker and Docker Compose
+**MinIO server for object storage
+**PostgreSQL database
+**Python packages: requests, minio, astro-sdk-python
+
+
+Astro project contains the following files and folders:
 
 - dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
     - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
@@ -17,7 +51,7 @@ Your Astro project contains the following files and folders:
 - plugins: Add custom or community plugins for your project to this file. It is empty by default.
 - airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
 
-Deploy Your Project Locally
+Deploy Project Locally
 ===========================
 
 1. Start Airflow on your local machine by running 'astro dev start'.
@@ -35,14 +69,11 @@ Note: Running 'astro dev start' will start your project with the Airflow Webserv
 
 3. Access the Airflow UI for your local Airflow project. To do so, go to http://localhost:8080/ and log in with 'airflow' for both your Username and Password.
 
-You should also be able to access your Postgres Database at 'localhost:5432/postgres'.
+You should also be able to access your Postgres Database at 'localhost:5435/postgres'.
 
-Deploy Your Project to Astronomer
+Deploy Project to Astronomer
 =================================
 
 If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
 
-Contact
-=======
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
