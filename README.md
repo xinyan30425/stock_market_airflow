@@ -42,6 +42,7 @@ graph TD;
     G --> H[End]
     B -->|API Not Available| I[Wait and Retry]
     I --> B
+```
 
 
 Astro project contains the following files and folders:
