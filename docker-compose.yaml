@@ -100,7 +100,7 @@ services:
       retries: 5
       start_period: 5s
     ports:
-      - "5435:5432"  # Host port : Container port
+      - "5432:5432"  # Host port : Container port
     restart: always
 
   redis:
